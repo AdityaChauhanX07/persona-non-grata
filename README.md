@@ -1,31 +1,41 @@
-# Persona Non Grata — The AI Ego-Mirror
+# Persona Non Grata
 
-> Paste your writing, face a version of yourself built from your own patterns, and debate the one person who knows every argument you'll try to avoid.
-
----
-
-## What It Does
-
-1. **Soul Dump** — paste raw writing samples (journal entries, messages, tweets)
-2. **Ego Forge** — Claude analyses your psycholinguistic patterns and builds a counter-persona
-3. **Debate Arena** — argue your dilemma against your own ego-mirror in real-time (streaming via SSE)
-4. **Psychological Autopsy** — receive a clinical breakdown of the cognitive biases and avoidance patterns the debate exposed
+An AI that builds a clone of your personality from your own writing, then argues the opposite side of your biggest decisions back at you.
 
 ---
 
-## Tech Stack
+## What it does
+
+You paste raw samples of your own writing. The app extracts your psycholinguistic patterns and constructs an adversarial counter-persona. You state your position on a dilemma. Your ego-mirror argues back using your own vocabulary, logic patterns, and blind spots against you.
+
+At the end, a Psychological Autopsy breaks down the cognitive biases you displayed, the arguments you avoided, and what the debate actually revealed.
+
+**The point:** most AI is designed to agree with you. This one isn't.
+
+---
+
+## Flow
+
+1. **Soul Dump** -- paste journal entries, messages, tweets, anything written in your voice
+2. **Ego Forge** -- AI extracts your personality: cadence, emotional defaults, cognitive biases, recurring patterns
+3. **Debate Arena** -- split-screen real-time debate between you and your ego-mirror (streaming via SSE)
+4. **Psychological Autopsy** -- clinical breakdown of what the debate exposed
+
+---
+
+## Tech stack
 
 | Layer | Tech |
 |---|---|
 | Frontend | React 18 + Vite + Tailwind CSS |
-| Backend | Python 3.11+ + FastAPI |
-| AI | Anthropic Claude API (`claude-sonnet-4-6`) with streaming |
-| Fonts | Syne (headings) + JetBrains Mono (body) |
+| Backend | Python + FastAPI |
+| AI | Groq API (llama-3.3-70b-versatile) with SSE streaming |
+| Fonts | Syne + JetBrains Mono |
 | Deployment | Vercel (frontend) + Render (backend) |
 
 ---
 
-## Project Structure
+## Project structure
 
 ```
 persona-non-grata/
@@ -68,89 +78,75 @@ persona-non-grata/
 
 - Node.js 18+ and npm
 - Python 3.11+
-- An Anthropic API key ([get one here](https://console.anthropic.com/))
+- A Groq API key (free at [console.groq.com](https://console.groq.com))
 
-### 1. Clone & configure environment
+### 1. Clone and configure
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/AdityaChauhanX07/persona-non-grata.git
 cd persona-non-grata
-cp .env.example .env
-# Edit .env and add your ANTHROPIC_API_KEY
+cp .env.example backend/.env
+# Add your GROQ_API_KEY to backend/.env
 ```
 
 ### 2. Backend
 
 ```bash
 cd backend
-
-# Create a virtual environment
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install dependencies
+venv\Scripts\activate        # Windows
+# source venv/bin/activate   # Mac/Linux
 pip install -r requirements.txt
-
-# Start the server
 uvicorn main:app --reload --port 8000
 ```
-
-Backend runs at `http://localhost:8000`
 
 ### 3. Frontend
 
 ```bash
 cd frontend
-
-# Install dependencies
 npm install
-
-# Start dev server
 npm run dev
 ```
 
-Frontend runs at `http://localhost:5173`
+Frontend runs at `http://localhost:5173`. Backend runs at `http://localhost:8000`.
 
 ---
 
-## API Endpoints
+## API
 
-| Method | Path | Description |
+| Method | Endpoint | Description |
 |---|---|---|
-| `POST` | `/extract-persona` | Analyse writing samples, return persona JSON |
-| `POST` | `/debate-response` | Stream ego's response via SSE |
-| `POST` | `/generate-autopsy` | Analyse full debate, return autopsy JSON |
-| `GET` | `/health` | Health check |
+| POST | `/extract-persona` | Analyse writing samples, return persona JSON |
+| POST | `/debate-response` | Stream ego response via SSE |
+| POST | `/generate-autopsy` | Analyse full debate transcript, return autopsy JSON |
 
 ---
 
 ## Deployment
 
-### Backend (Render)
+### Backend on Render
 
-1. Create a new **Web Service** on Render
-2. Set build command: `pip install -r requirements.txt`
-3. Set start command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-4. Add environment variable: `ANTHROPIC_API_KEY=your_key`
-5. Add `FRONTEND_URL=https://your-vercel-app.vercel.app`
+1. New Web Service, connect this repo
+2. Root directory: `backend`
+3. Build command: `pip install -r requirements.txt`
+4. Start command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+5. Environment variable: `GROQ_API_KEY=your_key`
 
-### Frontend (Vercel)
+### Frontend on Vercel
 
-1. Import the `frontend/` directory into Vercel
-2. Framework: **Vite**
-3. Add environment variable: `VITE_API_URL=https://your-render-backend.onrender.com`
+1. Import repo, set root directory to `frontend`
+2. Framework preset: Vite
+3. Environment variable: `VITE_API_URL=https://your-render-url.onrender.com`
 
 ---
 
-## Design System
+## Design
 
-```css
---bg:       #080810   /* near-black background */
---bg2:      #0d0d1a   /* panel background */
---ego-clr:  #d946ef   /* purple accent */
---mod-clr:  #22d3ee   /* cyan moderator */
---border:   #1a1a2e   /* subtle borders */
---red:      #f87171   /* bias tags */
+```
+Background:   #080810
+Ego accent:   #d946ef  (purple)
+Moderator:    #22d3ee  (cyan)
+Bias tags:    #f87171  (red)
 ```
 
-Fonts: **Syne 800** (headings) + **JetBrains Mono** (everything else)
+Headings: Syne 800. Body and messages: JetBrains Mono.

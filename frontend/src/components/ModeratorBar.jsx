@@ -13,7 +13,7 @@ export default function ModeratorBar({ dilemma, roundCount, onEnd, isEnding }) {
 
   return (
     <div
-      className="flex items-center justify-between px-5 py-3 shrink-0"
+      className="flex items-center justify-between px-3 md:px-5 py-3 shrink-0"
       style={{
         background: '#0d0d1a',
         borderBottom: '1px solid #1a1a2e',
@@ -86,11 +86,19 @@ export default function ModeratorBar({ dilemma, roundCount, onEnd, isEnding }) {
             if (!confirming) e.target.style.borderColor = '#1a1a2e'
           }}
         >
-          {isEnding
-            ? 'Analysing...'
-            : confirming
-              ? 'Confirm → Autopsy'
-              : 'End Session → Autopsy'}
+          {isEnding ? (
+            'Analysing...'
+          ) : confirming ? (
+            <>
+              <span className="md:hidden">Confirm</span>
+              <span className="hidden md:inline">Confirm → Autopsy</span>
+            </>
+          ) : (
+            <>
+              <span className="md:hidden">Autopsy</span>
+              <span className="hidden md:inline">End Session → Autopsy</span>
+            </>
+          )}
         </button>
       </div>
     </div>

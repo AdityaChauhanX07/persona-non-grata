@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #080810;
+  --bg2: #0d0d1a;
+  --user-clr: #e2e8f0;
+  --ego-clr: #d946ef;
+  --mod-clr: #22d3ee;
+  --text-dim: #4a4a6a;
+  --text-mid: #8888aa;
+  --border: #1a1a2e;
+  --red: #f87171;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--user-clr);
+  font-family: 'JetBrains Mono', monospace;
+  overflow-x: hidden;
+}
+
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* Screen entry animation */
+.screen-enter {
+  animation: screenEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes screenEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ego avatar glow pulse */
+.ego-avatar {
+  animation: egoPulse 3s ease-in-out infinite;
+}
+
+@keyframes egoPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px #d946ef, 0 0 20px #d946ef40;
+  }
+  50% {
+    box-shadow: 0 0 25px #d946ef, 0 0 50px #d946ef60, 0 0 80px #d946ef20;
+  }
+}
+
+/* Forge ring animations */
+.forge-ring-outer {
+  animation: spin 2.5s linear infinite;
+}
+
+.forge-ring-inner {
+  animation: spinReverse 1.8s linear infinite;
+}
+
+.forge-ring-innermost {
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinReverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.forge-emoji-pulse {
+  animation: forgePulse 2s ease-in-out infinite;
+}
+
+@keyframes forgePulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 1;
+  }
+}
+
+/* Pulsing dot */
+.pulse-dot {
+  animation: pulseDot 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Progress bar fill */
+.progress-bar-fill {
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ego message border glow */
+.ego-message {
+  border-left: 2px solid #d946ef;
+  box-shadow: -4px 0 12px #d946ef30, inset 0 0 20px #d946ef08;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}
+
+/* Textarea focus ring */
+textarea:focus,
+input:focus {
+  outline: none;
+}
+
+/* Typing cursor blink */
+.typing-cursor::after {
+  content: '▋';
+  animation: cursorBlink 1s step-end infinite;
+  color: #d946ef;
+  margin-left: 1px;
+}
+
+@keyframes cursorBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Log text fade in */
+.log-fade {
+  animation: logFade 0.4s ease forwards;
+}
+
+@keyframes logFade {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

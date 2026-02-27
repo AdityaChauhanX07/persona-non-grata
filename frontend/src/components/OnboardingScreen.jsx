@@ -16,7 +16,7 @@ export default function OnboardingScreen({ onSubmit }) {
     <div className="screen-enter min-h-screen flex flex-col items-center justify-center px-6 py-16 relative">
       {/* Background gradient orbs */}
       <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] md:w-[600px] md:h-[600px] rounded-full pointer-events-none"
         style={{
           background:
             'radial-gradient(circle, #d946ef08 0%, #d946ef02 40%, transparent 70%)',
@@ -66,7 +66,7 @@ export default function OnboardingScreen({ onSubmit }) {
                 onChange={(e) => setSoulDump(e.target.value)}
                 placeholder="Paste samples of your writing — journal entries, messages, tweets, emails, notes to yourself. The more raw and unfiltered, the more accurate your ego-mirror will be..."
                 rows={10}
-                className="w-full resize-none rounded-sm font-mono text-sm text-[#e2e8f0] placeholder-[#4a4a6a] p-4 leading-relaxed transition-all duration-200"
+                className="w-full resize-none rounded-sm font-mono text-sm text-[#e2e8f0] placeholder-[#4a4a6a] p-4 leading-relaxed transition-all duration-200 h-[120px] md:h-[unset]"
                 style={{
                   background: '#0d0d1a',
                   border: '1px solid #1a1a2e',

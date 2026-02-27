@@ -3,7 +3,7 @@ export default function AutopsyScreen({ data, dilemma, onNewSession }) {
     data || {}
 
   return (
-    <div className="screen-enter min-h-screen px-6 py-12 relative overflow-y-auto">
+    <div className="screen-enter min-h-screen px-4 md:px-6 py-8 md:py-12 relative overflow-y-auto">
       {/* Background glow */}
       <div
         className="fixed inset-0 pointer-events-none"
@@ -17,8 +17,8 @@ export default function AutopsyScreen({ data, dilemma, onNewSession }) {
         {/* Header */}
         <div className="mb-10">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-3xl">🔬</span>
-            <h1 className="font-syne font-black text-3xl text-[#e2e8f0]">
+            <span className="text-2xl md:text-3xl">🔬</span>
+            <h1 className="font-syne font-black text-2xl md:text-3xl text-[#e2e8f0]">
               Psychological Autopsy
             </h1>
           </div>
@@ -100,7 +100,7 @@ export default function AutopsyScreen({ data, dilemma, onNewSession }) {
           <section>
             <SectionLabel>The Mirror's Verdict</SectionLabel>
             <div
-              className="mt-3 p-5 rounded-sm relative overflow-hidden"
+              className="mt-3 p-4 md:p-5 rounded-sm relative overflow-hidden"
               style={{
                 background: '#14001f',
                 borderLeft: '3px solid #d946ef',

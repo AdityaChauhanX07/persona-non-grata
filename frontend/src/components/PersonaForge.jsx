@@ -97,13 +97,13 @@ export default function PersonaForge({ soulDump, dilemma, onComplete }) {
           <div className="text-xs font-mono tracking-[0.3em] text-[#4a4a6a] uppercase mb-3">
             ego forge active
           </div>
-          <h2 className="font-syne font-black text-3xl text-[#e2e8f0]">
+          <h2 className="font-syne font-black text-2xl md:text-3xl text-[#e2e8f0]">
             Building Your Mirror
           </h2>
         </div>
 
         {/* Spinning Ring */}
-        <div className="relative mb-10" style={{ width: 180, height: 180 }}>
+        <div className="relative mb-10 w-20 h-20 md:w-[180px] md:h-[180px]">
           {/* Outer ring */}
           <div
             className="forge-ring-outer absolute inset-0 rounded-full"
@@ -115,9 +115,8 @@ export default function PersonaForge({ soulDump, dilemma, onComplete }) {
           />
           {/* Middle ring */}
           <div
-            className="forge-ring-inner absolute rounded-full"
+            className="forge-ring-inner absolute inset-[5px] md:inset-[12px] rounded-full"
             style={{
-              inset: 12,
               border: '1.5px solid transparent',
               borderTopColor: '#d946ef80',
               borderLeftColor: '#d946ef40',
@@ -125,9 +124,8 @@ export default function PersonaForge({ soulDump, dilemma, onComplete }) {
           />
           {/* Inner ring */}
           <div
-            className="forge-ring-innermost absolute rounded-full"
+            className="forge-ring-innermost absolute inset-[11px] md:inset-[26px] rounded-full"
             style={{
-              inset: 26,
               border: '1px solid transparent',
               borderTopColor: '#d946ef50',
               borderBottomColor: '#d946ef20',
@@ -135,7 +133,7 @@ export default function PersonaForge({ soulDump, dilemma, onComplete }) {
           />
           {/* Center emoji */}
           <div
-            className="forge-emoji-pulse absolute text-4xl select-none"
+            className="forge-emoji-pulse absolute text-2xl md:text-4xl select-none"
             style={{ top: '50%', left: '50%' }}
           >
             🪞

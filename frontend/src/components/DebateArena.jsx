@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useDebate } from '../hooks/useDebate'
 import ModeratorBar from './ModeratorBar'
 import UserPanel from './UserPanel'
@@ -9,6 +9,21 @@ export default function DebateArena({ persona, dilemma, onAutopsy }) {
     useDebate(persona, dilemma)
   const [isEnding, setIsEnding] = useState(false)
   const [endError, setEndError] = useState(null)
+  const [activeTab, setActiveTab] = useState('user')
+  const prevTypingRef = useRef(false)
+
+  const handleSend = (msg) => {
+    setActiveTab('ego')
+    sendMessage(msg)
+  }
+
+  useEffect(() => {
+    if (prevTypingRef.current && !isEgoTyping) {
+      const timer = setTimeout(() => setActiveTab('user'), 600)
+      return () => clearTimeout(timer)
+    }
+    prevTypingRef.current = isEgoTyping
+  }, [isEgoTyping])
 
   const handleEnd = async () => {
     if (history.length === 0) return
@@ -45,18 +60,56 @@ export default function DebateArena({ persona, dilemma, onAutopsy }) {
         </div>
       )}
 
+      {/* Mobile tab bar */}
+      <div
+        className="md:hidden flex shrink-0"
+        style={{ borderBottom: '1px solid #1a1a2e', background: '#0d0d1a' }}
+      >
+        <button
+          onClick={() => setActiveTab('user')}
+          className={`flex-1 flex items-center justify-center gap-2 py-3 font-mono text-xs transition-colors duration-200 ${
+            activeTab === 'user' ? 'text-[#4ade80]' : 'text-[#4a4a6a]'
+          }`}
+          style={{ borderBottom: activeTab === 'user' ? '2px solid #4ade80' : '2px solid transparent' }}
+        >
+          🧑 You
+          {!isEgoTyping && history.some((m) => m.role === 'ego') && activeTab === 'user' && (
+            <span
+              className="w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{ background: '#4ade80' }}
+            />
+          )}
+        </button>
+        <button
+          onClick={() => setActiveTab('ego')}
+          className={`flex-1 flex items-center justify-center gap-2 py-3 font-mono text-xs transition-colors duration-200 ${
+            activeTab === 'ego' ? 'text-[#d946ef]' : 'text-[#4a4a6a]'
+          }`}
+          style={{ borderBottom: activeTab === 'ego' ? '2px solid #d946ef' : '2px solid transparent' }}
+        >
+          🪞 Your Ego
+          {isEgoTyping && (
+            <span className="font-mono text-[#d946ef] animate-pulse">···</span>
+          )}
+        </button>
+      </div>
+
       {/* Main debate area */}
       <div className="flex flex-1 overflow-hidden">
-        <UserPanel
-          history={history}
-          onSend={sendMessage}
-          disabled={isEgoTyping}
-        />
-        <EgoPanel
-          history={history}
-          isTyping={isEgoTyping}
-          egoStreamText={egoStreamText}
-        />
+        <div className={`${activeTab === 'user' ? 'flex' : 'hidden'} md:flex flex-col flex-1 overflow-hidden`}>
+          <UserPanel
+            history={history}
+            onSend={handleSend}
+            disabled={isEgoTyping}
+          />
+        </div>
+        <div className={`${activeTab === 'ego' ? 'flex' : 'hidden'} md:flex flex-col flex-1 overflow-hidden`}>
+          <EgoPanel
+            history={history}
+            isTyping={isEgoTyping}
+            egoStreamText={egoStreamText}
+          />
+        </div>
       </div>
 
       {/* Loading overlay when generating autopsy */}

@@ -27,10 +27,7 @@ export default function UserPanel({ history, onSend, disabled }) {
   }
 
   return (
-    <div
-      className="flex flex-col flex-1 overflow-hidden"
-      style={{ borderRight: '1px solid #1a1a2e' }}
-    >
+    <div className="flex flex-col flex-1 overflow-hidden md:border-r md:border-r-[#1a1a2e]">
       {/* Header */}
       <div
         className="px-5 py-4 shrink-0 flex items-center justify-between"

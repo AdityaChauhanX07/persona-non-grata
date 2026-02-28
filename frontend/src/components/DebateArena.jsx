@@ -11,6 +11,7 @@ export default function DebateArena({ persona, dilemma, onAutopsy }) {
   const [endError, setEndError] = useState(null)
   const [activeTab, setActiveTab] = useState('user')
   const prevTypingRef = useRef(false)
+  const initialSentRef = useRef(false)
 
   const handleSend = (msg) => {
     setActiveTab('ego')
@@ -24,6 +25,14 @@ export default function DebateArena({ persona, dilemma, onAutopsy }) {
     }
     prevTypingRef.current = isEgoTyping
   }, [isEgoTyping])
+
+  useEffect(() => {
+    if (!initialSentRef.current && dilemma) {
+      initialSentRef.current = true
+      handleSend(dilemma)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleEnd = async () => {
     if (history.length === 0) return

@@ -59,7 +59,7 @@ async def debate_response(request: DebateRequest):
         model="llama-3.3-70b-versatile",
         messages=messages,
         stream=True,
-        max_tokens=200
+        max_tokens=150
     )
 
     def stream_generator():

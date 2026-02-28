@@ -4,6 +4,10 @@ An AI that builds a clone of your personality from your own writing, then argues
 
 ---
 
+**Live demo:** [persona-non-grata.vercel.app](https://persona-non-grata.vercel.app)
+
+---
+
 ## What it does
 
 You paste raw samples of your own writing. The app extracts your psycholinguistic patterns and constructs an adversarial counter-persona. You state your position on a dilemma. Your ego-mirror argues back using your own vocabulary, logic patterns, and blind spots against you.

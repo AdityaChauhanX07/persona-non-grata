@@ -38,10 +38,10 @@ AUTOPSY_SYSTEM = """You are a cognitive behavioral analyst. Analyze this debate 
 
 Return ONLY a valid JSON object (no markdown, no code blocks) with these exact keys:
 {
-  "biases_detected": ["specific bias with example from debate", "another bias with example"],
-  "avoided_argument": "The most important counter-argument they refused to engage with, and why they likely avoided it",
-  "what_revealed": "A paragraph about what this debate revealed about their relationship with this dilemma — patterns, fears, desires",
-  "verdict": "One single powerful sentence: the brutal honest truth the debate exposed"
+  "biases_detected": ["specific bias with example from debate. Must end with a period.", "another bias with example. Must end with a period."],
+  "avoided_argument": "The counter-argument they avoided most. Must end with a period.",
+  "what_revealed": "A paragraph about what this debate revealed about their relationship with this dilemma — patterns, fears, desires. Must end with a period.",
+  "verdict": "One single powerful sentence: the brutal honest truth the debate exposed. Must end with a period."
 }
 
 Always write complete sentences. Every section must end with a complete sentence and a full stop. Never truncate mid-thought. If you are running long, finish the current sentence before stopping.

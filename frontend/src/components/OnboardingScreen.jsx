@@ -16,7 +16,11 @@ export default function OnboardingScreen({ onSubmit }) {
     onSubmit(soulDump.trim(), dilemma.trim())
   }
 
-  const isReady = soulDump.trim().length > 20 && dilemma.trim().length > 3
+  const SOUL_DUMP_MAX = 5000
+  const soulDumpLen = soulDump.length
+  const isOverLimit = soulDumpLen > SOUL_DUMP_MAX
+  const isNearLimit = soulDumpLen >= SOUL_DUMP_MAX * 0.9
+  const isReady = soulDump.trim().length > 20 && dilemma.trim().length > 3 && !isOverLimit
 
   return (
     <div className="screen-enter min-h-screen flex flex-col items-center justify-center px-6 py-16 relative">
@@ -75,23 +79,28 @@ export default function OnboardingScreen({ onSubmit }) {
                 className="w-full resize-none rounded-sm font-mono text-sm text-[#e2e8f0] placeholder-[#4a4a6a] p-4 leading-relaxed transition-all duration-200 h-[120px] md:h-[unset]"
                 style={{
                   background: '#0d0d1a',
-                  border: '1px solid #1a1a2e',
-                  boxShadow: soulDump
+                  border: `1px solid ${isOverLimit ? '#f87171' : '#1a1a2e'}`,
+                  boxShadow: isOverLimit
+                    ? 'inset 0 0 0 1px #f8717140'
+                    : soulDump
                     ? 'inset 0 0 0 1px #d946ef20'
                     : 'none',
                 }}
                 onFocus={(e) =>
-                  (e.target.style.borderColor = '#d946ef40')
+                  (e.target.style.borderColor = isOverLimit ? '#f87171' : '#d946ef40')
                 }
                 onBlur={(e) =>
-                  (e.target.style.borderColor = '#1a1a2e')
+                  (e.target.style.borderColor = isOverLimit ? '#f87171' : '#1a1a2e')
                 }
               />
-              {soulDump && (
-                <div className="absolute bottom-3 right-3 text-xs font-mono text-[#4a4a6a]">
-                  {soulDump.length} chars
-                </div>
-              )}
+            </div>
+            <div className="flex justify-end mt-1.5">
+              <span
+                className="font-mono text-xs"
+                style={{ color: isOverLimit ? '#f87171' : isNearLimit ? '#fb923c' : '#4a4a6a' }}
+              >
+                {soulDumpLen.toLocaleString()} / {SOUL_DUMP_MAX.toLocaleString()}
+              </span>
             </div>
           </div>
 

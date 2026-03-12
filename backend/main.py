@@ -28,3 +28,7 @@ app.include_router(debate_router)
 @app.get("/")
 def root():
     return {"status": "ok"}
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}

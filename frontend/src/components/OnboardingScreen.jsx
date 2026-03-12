@@ -1,8 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 export default function OnboardingScreen({ onSubmit }) {
   const [soulDump, setSoulDump] = useState('')
   const [dilemma, setDilemma] = useState('')
+
+  useEffect(() => {
+    fetch(`${API_BASE}/health`).catch(() => {})
+  }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -138,6 +144,10 @@ export default function OnboardingScreen({ onSubmit }) {
 
           <p className="text-center text-xs font-mono text-[#4a4a6a]">
             Your writing is never stored. It exists only for this session.
+          </p>
+          <p className="text-center text-xs font-mono text-[#3a3a5a] leading-relaxed">
+            Your psychological profile is generated client-side and may be visible
+            in browser DevTools. We never store or transmit your data to third parties.
           </p>
         </form>
       </div>

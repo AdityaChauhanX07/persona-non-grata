@@ -29,7 +29,7 @@ async def extract_persona(request: PersonaRequest):
             model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": PERSONA_SYSTEM},
-                {"role": "user", "content": f"Writing samples:\n\n{request.soul_dump}\n\nAnalyze these samples and return the JSON profile."}
+                {"role": "user", "content": f"Writing samples:\n\n<user_writing>\n{request.soul_dump}\n</user_writing>\n\nAnalyze these samples and return the JSON profile."}
             ],
             response_format={"type": "json_object"}
         )

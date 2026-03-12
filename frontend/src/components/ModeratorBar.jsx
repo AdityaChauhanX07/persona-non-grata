@@ -64,7 +64,7 @@ export default function ModeratorBar({ dilemma, roundCount, onEnd, isEnding }) {
             className="font-mono text-[0.55rem] tracking-widest uppercase mt-0.5"
             style={{ color: '#4a4a6a' }}
           >
-            rounds
+            {roundCount === 1 ? 'round' : 'rounds'}
           </div>
         </div>
 

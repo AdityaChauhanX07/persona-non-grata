@@ -10,8 +10,14 @@ export default function DebateArena({ persona, dilemma, onAutopsy }) {
   const [isEnding, setIsEnding] = useState(false)
   const [endError, setEndError] = useState(null)
   const [activeTab, setActiveTab] = useState('user')
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
   const prevTypingRef = useRef(false)
-  const initialSentRef = useRef(false)
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  }, [])
 
   const handleSend = (msg) => {
     setActiveTab('ego')
@@ -27,11 +33,12 @@ export default function DebateArena({ persona, dilemma, onAutopsy }) {
   }, [isEgoTyping])
 
   useEffect(() => {
-    if (!initialSentRef.current && dilemma) {
-      initialSentRef.current = true
-      handleSend(dilemma)
+    const handleBeforeUnload = (e) => {
+      e.preventDefault()
+      e.returnValue = ''
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
   }, [])
 
   const handleEnd = async () => {
@@ -105,20 +112,25 @@ export default function DebateArena({ persona, dilemma, onAutopsy }) {
 
       {/* Main debate area */}
       <div className="flex flex-1 overflow-hidden">
-        <div className={`${activeTab === 'user' ? 'flex' : 'hidden'} md:flex flex-col flex-1 overflow-hidden`}>
-          <UserPanel
-            history={history}
-            onSend={handleSend}
-            disabled={isEgoTyping}
-          />
-        </div>
-        <div className={`${activeTab === 'ego' ? 'flex' : 'hidden'} md:flex flex-col flex-1 overflow-hidden`}>
-          <EgoPanel
-            history={history}
-            isTyping={isEgoTyping}
-            egoStreamText={egoStreamText}
-          />
-        </div>
+        {(!isMobile || activeTab === 'user') && (
+          <div className="flex flex-col flex-1 overflow-hidden">
+            <UserPanel
+              history={history}
+              onSend={handleSend}
+              disabled={isEgoTyping}
+              placeholder="State your opening argument..."
+            />
+          </div>
+        )}
+        {(!isMobile || activeTab === 'ego') && (
+          <div className="flex flex-col flex-1 overflow-hidden">
+            <EgoPanel
+              history={history}
+              isTyping={isEgoTyping}
+              egoStreamText={egoStreamText}
+            />
+          </div>
+        )}
       </div>
 
       {/* Loading overlay when generating autopsy */}

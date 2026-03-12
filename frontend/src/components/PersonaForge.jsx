@@ -12,15 +12,19 @@ const FORGE_STEPS = [
 ]
 
 const STEP_DURATION = 850
+const API_TIMEOUT_MS = 60000
 
 export default function PersonaForge({ soulDump, dilemma, onComplete }) {
   const [currentStep, setCurrentStep] = useState(0)
   const [progress, setProgress] = useState(0)
   const [logLines, setLogLines] = useState([FORGE_STEPS[0]])
   const [error, setError] = useState(null)
+  const [retryKey, setRetryKey] = useState(0)
   const personaRef = useRef(null)
   const animDoneRef = useRef(false)
   const apiDoneRef = useRef(false)
+  const intervalRef = useRef(null)
+  const timeoutRef = useRef(null)
 
   const tryComplete = () => {
     if (animDoneRef.current && apiDoneRef.current && personaRef.current) {
@@ -29,20 +33,14 @@ export default function PersonaForge({ soulDump, dilemma, onComplete }) {
   }
 
   useEffect(() => {
-    // Start API call immediately
-    extractPersona(soulDump, dilemma)
-      .then((data) => {
-        personaRef.current = data
-        apiDoneRef.current = true
-        tryComplete()
-      })
-      .catch((err) => {
-        setError(err.message)
-      })
+    // Reset refs on retry
+    animDoneRef.current = false
+    apiDoneRef.current = false
+    personaRef.current = null
 
     // Run animation steps
     let step = 0
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       step++
       if (step < FORGE_STEPS.length) {
         setCurrentStep(step)
@@ -50,15 +48,46 @@ export default function PersonaForge({ soulDump, dilemma, onComplete }) {
         setProgress(Math.round((step / (FORGE_STEPS.length - 1)) * 100))
       }
       if (step >= FORGE_STEPS.length - 1) {
-        clearInterval(interval)
+        clearInterval(intervalRef.current)
         animDoneRef.current = true
         tryComplete()
       }
     }, STEP_DURATION)
 
-    return () => clearInterval(interval)
+    // 60s hard timeout
+    timeoutRef.current = setTimeout(() => {
+      clearInterval(intervalRef.current)
+      setError('This is taking too long. The server may be waking up — please try again.')
+    }, API_TIMEOUT_MS)
+
+    // Start API call immediately
+    extractPersona(soulDump, dilemma)
+      .then((data) => {
+        clearTimeout(timeoutRef.current)
+        personaRef.current = data
+        apiDoneRef.current = true
+        tryComplete()
+      })
+      .catch((err) => {
+        clearTimeout(timeoutRef.current)
+        clearInterval(intervalRef.current)
+        setError(err.message)
+      })
+
+    return () => {
+      clearInterval(intervalRef.current)
+      clearTimeout(timeoutRef.current)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [retryKey])
+
+  const handleRetry = () => {
+    setError(null)
+    setCurrentStep(0)
+    setProgress(0)
+    setLogLines([FORGE_STEPS[0]])
+    setRetryKey((k) => k + 1)
+  }
 
   if (error) {
     return (
@@ -71,10 +100,20 @@ export default function PersonaForge({ soulDump, dilemma, onComplete }) {
           <h2 className="font-syne font-bold text-[#e2e8f0] text-lg mb-2">
             Ego Forge Failed
           </h2>
-          <p className="font-mono text-sm text-[#8888aa] mb-4">{error}</p>
-          <p className="font-mono text-xs text-[#4a4a6a]">
-            Check your API key and backend connection, then refresh.
-          </p>
+          <p className="font-mono text-sm text-[#8888aa] mb-6">{error}</p>
+          <button
+            onClick={handleRetry}
+            className="w-full py-3 rounded-sm font-syne font-bold text-sm tracking-[0.15em] uppercase transition-all duration-300"
+            style={{
+              background: 'linear-gradient(135deg, #d946ef, #a21caf)',
+              color: '#ffffff',
+              border: '1px solid #d946ef',
+              boxShadow: '0 0 20px #d946ef20',
+              cursor: 'pointer',
+            }}
+          >
+            Retry →
+          </button>
         </div>
       </div>
     )
@@ -100,6 +139,9 @@ export default function PersonaForge({ soulDump, dilemma, onComplete }) {
           <h2 className="font-syne font-black text-2xl md:text-3xl text-[#e2e8f0]">
             Building Your Mirror
           </h2>
+          <p className="font-mono text-xs text-[#4a4a6a] mt-2">
+            First load may take up to 30 seconds while the server wakes up.
+          </p>
         </div>
 
         {/* Spinning Ring */}

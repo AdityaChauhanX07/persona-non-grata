@@ -52,8 +52,9 @@ async def debate_response(request: DebateRequest):
     messages = [{"role": "system", "content": system_prompt}]
     for msg in request.history:
         role = "user" if msg.role == "user" else "assistant"
-        messages.append({"role": role, "content": msg.content})
-    messages.append({"role": "user", "content": request.user_message})
+        content = f"<user_argument>\n{msg.content}\n</user_argument>" if msg.role == "user" else msg.content
+        messages.append({"role": role, "content": content})
+    messages.append({"role": "user", "content": f"<user_argument>\n{request.user_message}\n</user_argument>"})
 
     stream = client.chat.completions.create(
         model="llama-3.3-70b-versatile",

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-export default function UserPanel({ history, onSend, disabled }) {
+export default function UserPanel({ history, onSend, disabled, placeholder }) {
   const [input, setInput] = useState('')
   const messagesEndRef = useRef(null)
   const textareaRef = useRef(null)
@@ -120,7 +120,7 @@ export default function UserPanel({ history, onSend, disabled }) {
             placeholder={
               disabled
                 ? 'Wait for the ego to respond...'
-                : 'State your argument... (Enter to send)'
+                : placeholder || 'State your argument... (Enter to send)'
             }
             rows={3}
             className="w-full resize-none font-mono text-sm text-[#e2e8f0] placeholder-[#4a4a6a] px-4 py-3 pr-16 rounded-sm transition-all duration-200"

@@ -60,7 +60,7 @@ async def debate_response(request: DebateRequest):
         model="llama-3.3-70b-versatile",
         messages=messages,
         stream=True,
-        max_tokens=150
+        max_tokens=200
     )
 
     def stream_generator():
@@ -110,7 +110,8 @@ Analyze this debate and return the JSON autopsy report."""
                 {"role": "system", "content": AUTOPSY_SYSTEM},
                 {"role": "user", "content": prompt}
             ],
-            response_format={"type": "json_object"}
+            response_format={"type": "json_object"},
+            max_tokens=1000
         )
         result = response.choices[0].message.content
 

@@ -44,4 +44,6 @@ Return ONLY a valid JSON object (no markdown, no code blocks) with these exact k
   "verdict": "One single powerful sentence: the brutal honest truth the debate exposed"
 }
 
+Always write complete sentences. Every section must end with a complete sentence and a full stop. Never truncate mid-thought. If you are running long, finish the current sentence before stopping.
+
 Be clinical, direct, and uncomfortably honest. The verdict must be devastating in its accuracy."""

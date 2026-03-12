@@ -111,9 +111,9 @@ export default function DebateArena({ persona, dilemma, onAutopsy }) {
       </div>
 
       {/* Main debate area */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 min-h-0 overflow-hidden">
         {(!isMobile || activeTab === 'user') && (
-          <div className="flex flex-col flex-1 overflow-hidden">
+          <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
             <UserPanel
               history={history}
               onSend={handleSend}
@@ -122,7 +122,7 @@ export default function DebateArena({ persona, dilemma, onAutopsy }) {
           </div>
         )}
         {(!isMobile || activeTab === 'ego') && (
-          <div className="flex flex-col flex-1 overflow-hidden">
+          <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
             <EgoPanel
               history={history}
               isTyping={isEgoTyping}

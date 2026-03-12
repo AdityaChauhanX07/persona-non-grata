@@ -38,12 +38,12 @@ export default function ModeratorBar({ dilemma, roundCount, onEnd, isEnding }) {
 
         <div className="h-4 w-px shrink-0" style={{ background: '#1a1a2e' }} />
 
-        <div className="min-w-0 flex-1">
-          <span className="font-mono text-xs text-[#4a4a6a] mr-2 shrink-0">
+        <div className="min-w-0 flex-1 flex items-center">
+          <span className="font-mono text-xs text-[#4a4a6a] mr-2 shrink-0 hidden md:inline">
             topic:
           </span>
           <span
-            className="font-mono text-xs text-[#e2e8f0] truncate"
+            className="font-mono text-xs text-[#e2e8f0] truncate overflow-hidden whitespace-nowrap block min-w-0 max-w-[120px] md:max-w-xs lg:max-w-sm"
             title={dilemma}
           >
             {dilemma}

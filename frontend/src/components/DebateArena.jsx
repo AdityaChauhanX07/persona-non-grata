@@ -118,7 +118,6 @@ export default function DebateArena({ persona, dilemma, onAutopsy }) {
               history={history}
               onSend={handleSend}
               disabled={isEgoTyping}
-              placeholder="State your opening argument..."
             />
           </div>
         )}
